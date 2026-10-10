@@ -23,6 +23,28 @@ fvm flutter run -d "iPhone 16" \
 Kontrak endpoint dan checklist prasyarat API berada di
 `../../materi_pendamping/API_HANDOFF_EXPRESS_SWAGGER_DOCKER.md`.
 
+## API Express + Docker lokal
+
+Backend uji yang kontraknya sesuai aplikasi tersedia di
+`../../backend/inspection-api`. Jalankan dari root paket:
+
+```sh
+cd backend/inspection-api
+docker compose up --build -d
+curl http://localhost:3100/health
+```
+
+Swagger UI tersedia di <http://localhost:3100/docs>. Setelah backend sehat,
+jalankan Flutter dari folder proyek Hari 2:
+
+```sh
+fvm flutter run -d "iPhone 16" \
+  --dart-define=API_BASE_URL=http://localhost:3100
+```
+
+Android Emulator memakai `http://10.0.2.2:3100`. Login dummy tetap
+`trainer` / `training123`.
+
 ## Fallback mock lokal
 
 Dari root paket, jalankan mock API di terminal pertama bila hosted API belum
