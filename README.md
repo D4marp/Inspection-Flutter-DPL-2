@@ -11,8 +11,8 @@ ChangeNotifier, cache, error handling, dan form POST.
 
 ## Menjalankan dengan hosted API
 
-Backend utama kelas disiapkan menggunakan Express, Swagger/OpenAPI, dan Docker.
-Periksa `/health` serta Swagger UI terlebih dahulu, lalu jalankan:
+API utama kelas sudah disiapkan oleh trainer/PIC. Peserta langsung berfokus pada
+integrasi Flutter. Periksa `/health`, lalu jalankan:
 
 ```sh
 fvm flutter pub get
@@ -20,7 +20,7 @@ fvm flutter run -d "iPhone 16" \
   --dart-define=API_BASE_URL=https://HOST_API_TRAINING
 ```
 
-Kontrak endpoint dan checklist backend–Flutter berada di
+Kontrak endpoint dan checklist prasyarat API berada di
 `../../materi_pendamping/API_HANDOFF_EXPRESS_SWAGGER_DOCKER.md`.
 
 ## Fallback mock lokal
