@@ -49,23 +49,18 @@ class InspectionRepository {
     } on http.ClientException {
       return (await _readCache()) ??
           (throw const ApiException(503, 'Koneksi gagal dan cache kosong.'));
-    } on ApiException catch (error) {
-      if (error.statusCode == 401) await clearSession();
-      rethrow;
     }
   }
 
-  Future<Inspection> create(Map<String, dynamic> fields) async {
-    try {
-      return await api.createInspection(fields);
-    } on ApiException catch (error) {
-      if (error.statusCode == 401) await clearSession();
-      rethrow;
-    }
-  }
+  Future<Inspection> create(Map<String, dynamic> fields) =>
+      api.createInspection(fields);
 
-  Future<void> clearSession() async {
-    await api.clearToken();
+  Future<Inspection> update(String id, Map<String, dynamic> fields) =>
+      api.updateInspection(id, fields);
+
+  Future<void> delete(String id) => api.deleteInspection(id);
+
+  Future<void> clearCache() async {
     await _preferences.remove(_cacheKey);
   }
 

@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'controllers/session_controller.dart';
 import 'data/api_client.dart';
 import 'data/inspection_repository.dart';
 import 'screens/home_screen.dart';
-import 'screens/login_screen.dart';
 
 const apiBaseUrl = String.fromEnvironment(
   'API_BASE_URL',
-  defaultValue: 'http://localhost:8000',
+  defaultValue: 'https://jsonplaceholder.typicode.com',
 );
-const autoLogin = bool.fromEnvironment('AUTO_LOGIN');
 
 class DplInspectionApp extends StatefulWidget {
   const DplInspectionApp({super.key});
@@ -22,20 +19,16 @@ class DplInspectionApp extends StatefulWidget {
 class _DplInspectionAppState extends State<DplInspectionApp> {
   late final ApiClient _api;
   late final InspectionRepository _repository;
-  late final SessionController _session;
 
   @override
   void initState() {
     super.initState();
     _api = ApiClient(baseUrl: apiBaseUrl);
     _repository = InspectionRepository(_api);
-    _session = SessionController(_api, _repository)
-      ..initialize(autoLogin: autoLogin);
   }
 
   @override
   void dispose() {
-    _session.dispose();
     _api.close();
     super.dispose();
   }
@@ -45,24 +38,29 @@ class _DplInspectionAppState extends State<DplInspectionApp> {
     title: 'DPL Inspection',
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xff006a60)),
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: const Color(0xff0b5f59),
+        primary: const Color(0xff0b5f59),
+        secondary: const Color(0xffd79b32),
+        surface: const Color(0xfff8faf9),
+      ),
+      scaffoldBackgroundColor: const Color(0xfff3f6f5),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Color(0xff092f35),
+        foregroundColor: Colors.white,
+      ),
+      cardTheme: const CardThemeData(
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(18)),
+          side: BorderSide(color: Color(0xffdfe7e5)),
+        ),
+      ),
       useMaterial3: true,
       inputDecorationTheme: const InputDecorationTheme(
         border: OutlineInputBorder(),
       ),
     ),
-    home: ListenableBuilder(
-      listenable: _session,
-      builder: (context, _) => switch (_session.status) {
-        SessionStatus.starting => const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        ),
-        SessionStatus.signedOut => LoginScreen(session: _session),
-        SessionStatus.signedIn => HomeScreen(
-          session: _session,
-          repository: _repository,
-        ),
-      },
-    ),
+    home: HomeScreen(repository: _repository),
   );
 }
