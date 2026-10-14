@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'config/env.dart';
 import 'data/api_client.dart';
 import 'data/inspection_repository.dart';
 import 'screens/home_screen.dart';
-
-const apiBaseUrl = String.fromEnvironment(
-  'API_BASE_URL',
-  defaultValue: 'https://jsonplaceholder.typicode.com',
-);
 
 class DplInspectionApp extends StatefulWidget {
   const DplInspectionApp({super.key});
@@ -23,7 +19,7 @@ class _DplInspectionAppState extends State<DplInspectionApp> {
   @override
   void initState() {
     super.initState();
-    _api = ApiClient(baseUrl: apiBaseUrl);
+    _api = ApiClient(baseUrl: Env.apiBaseUrl);
     _repository = InspectionRepository(_api);
   }
 

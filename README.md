@@ -23,28 +23,30 @@ kembali ke data public API.
 Banner pada tab CRUD selalu menjelaskan batas ini. Jangan menyatakan create,
 update, atau delete sebagai persistence production.
 
-## Menjalankan
+## Menjalankan (endpoint dari ENV)
+
+Endpoint tidak di-hardcode di data layer. Seluruh konfigurasi dibaca dari
+`env/<nama>.json` melalui `--dart-define-from-file` dan dikumpulkan di
+`lib/src/config/env.dart`:
 
 ```sh
 fvm flutter pub get
 fvm flutter analyze
 fvm flutter test
-fvm flutter run
+fvm flutter run -d "iPhone 16" --dart-define-from-file=env/dev.json
 ```
 
-Base URL default sudah public:
+| Key | Default | Fungsi |
+|---|---|---|
+| `ENV_NAME` | `dev` | nama environment |
+| `API_BASE_URL` | `https://jsonplaceholder.typicode.com` | host API (wajib HTTPS) |
+| `API_POSTS_PATH` | `/posts` | resource path |
+| `API_LIST_LIMIT` | `20` | `_limit` pada GET |
+| `API_TIMEOUT_SECONDS` | `10` | timeout request |
 
-```text
-https://jsonplaceholder.typicode.com
-```
-
-Tidak ada login karena JSONPlaceholder tidak memerlukan authentication. Jika
-ingin mengganti mirror HTTPS yang kompatibel:
-
-```sh
-fvm flutter run \
-  --dart-define=API_BASE_URL=https://HOST-YANG-KOMPATIBEL
-```
+Build prod: `fvm flutter build apk --dart-define-from-file=env/prod.json`.
+Hanya nilai non-rahasia yang boleh masuk `env/*.json`; lihat
+[env/README.md](env/README.md). Tanpa flag, `Env` memakai default di atas.
 
 ## Endpoint latihan
 

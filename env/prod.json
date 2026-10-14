@@ -1,0 +1,7 @@
+{
+  "ENV_NAME": "prod",
+  "API_BASE_URL": "https://jsonplaceholder.typicode.com",
+  "API_POSTS_PATH": "/posts",
+  "API_LIST_LIMIT": "20",
+  "API_TIMEOUT_SECONDS": "15"
+}
